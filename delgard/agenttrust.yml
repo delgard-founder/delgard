@@ -1,0 +1,12 @@
+version: 1
+rules:
+  - from: orchestrator
+    to: research-subagent
+    allow: [web_search, file_read]
+    maxBudget: 10
+    requireApproval: false
+
+  - from: orchestrator
+    to: "*"
+    allow: [file_write]
+    requireApproval: true

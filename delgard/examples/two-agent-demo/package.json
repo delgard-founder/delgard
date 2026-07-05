@@ -1,0 +1,14 @@
+{
+  "name": "two-agent-demo",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/demo.ts"
+  },
+  "dependencies": {
+    "@delgard/core": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.0"
+  }
+}
