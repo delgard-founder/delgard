@@ -16,7 +16,7 @@ import {
   type PolicyDoc,
 } from "@delgard/core";
 
-const AUDIT_LOG = "/tmp/two-agent-demo-audit.jsonl";
+const AUDIT_LOG = "./audit-demo.jsonl";
 
 const policy: PolicyDoc = {
   version: 1,
