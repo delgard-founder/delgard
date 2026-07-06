@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { writeFileSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync, readFileSync } from "node:fs";
 import { createKeyPair, verifyAuditLog, loadPolicy } from "@delgard/core";
 
 const DEFAULT_POLICY = `version: 1
@@ -29,7 +29,13 @@ async function cmdInit() {
   const keys = await createKeyPair();
   writeFileSync(".delgard-keys.json", JSON.stringify(keys, null, 2), "utf-8");
   console.log("✔ Paire de clés Ed25519 générée dans .delgard-keys.json");
-  console.log("⚠️  Ne commite JAMAIS ce fichier de clés dans git (ajoute-le à .gitignore).");
+
+  const gitignoreEntry = ".delgard-keys.json";
+  const existingGitignore = existsSync(".gitignore") ? readFileSync(".gitignore", "utf-8") : "";
+  if (!existingGitignore.includes(gitignoreEntry)) {
+    writeFileSync(".gitignore", existingGitignore + (existingGitignore.endsWith("\n") || existingGitignore === "" ? "" : "\n") + gitignoreEntry + "\n", "utf-8");
+    console.log("✔ .delgard-keys.json ajouté automatiquement à .gitignore (protection contre un commit accidentel).");
+  }
 }
 
 function cmdVerify(logPath: string) {
