@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { writeFileSync, existsSync, readFileSync } from "node:fs";
-import { createKeyPair, verifyAuditLog, loadPolicy } from "@delgard/core";
+import { createKeyPair, verifyAuditLog, loadPolicy } from "delgard-core";
 
 const DEFAULT_POLICY = `version: 1
 rules:
@@ -30,6 +30,8 @@ async function cmdInit() {
   writeFileSync(".delgard-keys.json", JSON.stringify(keys, null, 2), "utf-8");
   console.log("✔ Paire de clés Ed25519 générée dans .delgard-keys.json");
 
+  // On ne se contente pas d'avertir : on protège vraiment le fichier de clés
+  // en l'ajoutant au .gitignore local, pour qu'il ne puisse pas finir sur GitHub par erreur.
   const gitignoreEntry = ".delgard-keys.json";
   const existingGitignore = existsSync(".gitignore") ? readFileSync(".gitignore", "utf-8") : "";
   if (!existingGitignore.includes(gitignoreEntry)) {

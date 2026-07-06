@@ -6,7 +6,7 @@
     "start": "tsx src/demo.ts"
   },
   "dependencies": {
-    "@delgard/core": "workspace:*"
+    "delgard-core": "workspace:*"
   },
   "devDependencies": {
     "tsx": "^4.16.0"

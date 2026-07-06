@@ -20,7 +20,7 @@ importers:
 
   examples/two-agent-demo:
     dependencies:
-      '@delgard/core':
+      delgard-core:
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:
@@ -30,7 +30,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@delgard/core':
+      delgard-core:
         specifier: workspace:*
         version: link:../core
     devDependencies:

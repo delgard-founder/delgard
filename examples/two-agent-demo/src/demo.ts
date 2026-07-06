@@ -14,7 +14,7 @@ import {
   appendAuditEntry,
   verifyAuditLog,
   type PolicyDoc,
-} from "@delgard/core";
+} from "delgard-core";
 
 const AUDIT_LOG = "./audit-demo.jsonl";
 
