@@ -31,5 +31,43 @@ cd delgard
 pnpm install
 pnpm build
 pnpm demo
+```
 
+Résultat attendu :
+- une action autorisée (`web_search`) passe,
+- une action hors-scope (`file_write`) est bloquée,
+- le journal d'audit est vérifié comme intact.
 
+### Utiliser le CLI
+
+```bash
+node packages/cli/dist/index.js init      # crée agenttrust.yml + une paire de clés
+node packages/cli/dist/index.js verify audit-demo.jsonl
+node packages/cli/dist/index.js report agenttrust.yml
+```
+
+## Structure du repo
+
+```
+packages/core   → tokens, moteur de policy, journal d'audit (sans dépendance à un framework)
+packages/cli    → delgard init | verify | report
+examples/       → démo runnable en une commande (pnpm demo)
+```
+
+## Pourquoi ça existe
+
+Les gateways de sécurité pour agents IA (Prisma AIRS, Check Point, Lakera) protègent déjà
+très bien la frontière **agent → outil**. Aucun ne couvre l'autorisation fine et la preuve
+d'audit pour la frontière **agent → agent** — exactement ce qui devient critique à mesure
+que les architectures multi-agents (orchestrateur + sous-agents) se généralisent dans
+l'écosystème TypeScript (Vercel AI SDK, Mastra, LangGraph.js, Claude Agent SDK).
+
+## Statut
+
+V0 — cœur technique fonctionnel et testé (tokens, policy, audit, CLI). Intégrations
+officielles avec les frameworks TS (adapter Vercel AI SDK, etc.) à venir. Contributions
+et retours bienvenus via les issues GitHub.
+
+## Licence
+
+MIT.
