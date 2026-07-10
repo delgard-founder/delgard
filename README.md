@@ -8,8 +8,17 @@ Les gateways existants (Palo Alto Prisma AIRS, Check Point/Lakera) sécurisent l
 
 ## 🚀 Installation
 
+Deux façons d'utiliser delgard, selon ton besoin :
+
+**En ligne de commande (CLI)** — pour initialiser un projet, vérifier un journal d'audit, générer un rapport :
 ```bash
-npm install delgard
+npm install -g delgard
+delgard init
+```
+
+**Dans ton code** — pour vérifier des capacités de façon programmatique dans ton propre agent :
+```bash
+npm install delgard-core
 ```
 
 ## ⚡ Exemple d'utilisation (30 secondes)
@@ -17,20 +26,19 @@ npm install delgard
 Voici comment vérifier qu'un sous-agent a le droit d'exécuter une action :
 
 ```typescript
-import { verifyCapability } from 'delgard';
+import { verifyCapability, isActionAllowed } from 'delgard-core';
 
-const result = await verifyCapability({
-  token: orchestrateurToken,
-  action: 'web_search',
-  policy: 'agenttrust.yml'
-});
+// publicKeyJwk : la clé publique Ed25519 de l'agent orchestrateur
+const capability = await verifyCapability(subAgentToken, publicKeyJwk);
 
-if (result.allowed) {
-  console.log("✅ Action autorisée et loguée dans l'audit.");
+if (isActionAllowed(capability, 'web_search')) {
+  console.log(`✅ ${capability.subject} autorisé : scope [${capability.scope.join(', ')}]`);
 } else {
-  console.log("❌ Bloqué par la policy :", result.reason);
+  console.log(`❌ ${capability.subject} hors scope — action refusée`);
 }
 ```
+
+`verifyCapability` lève une erreur automatiquement si la signature est invalide ou si le token a expiré — pas besoin de vérifier ça toi-même.
 
 ## 🎯 Ce que ça fait
 
@@ -42,9 +50,19 @@ if (result.allowed) {
 
 4. **CLI** — `delgard init | verify | report`, protège automatiquement les clés générées (ajout au `.gitignore` local, pas juste un avertissement).
 
+## 🧭 Référence CLI
+
+Une fois installé avec `npm install -g delgard` :
+
+```bash
+delgard init      # crée agenttrust.yml + une paire de clés, protège les clés dans .gitignore
+delgard verify     # vérifie l'intégrité d'un journal d'audit
+delgard report      # génère un rapport lisible à partir de la policy et de l'audit
+```
+
 ## 🧪 Explorer le projet (démo complète)
 
-Si tu veux voir delgard en action avec une démo à 2 agents :
+Si tu veux voir delgard en action avec une démo à 2 agents, sans rien installer globalement :
 
 ```bash
 git clone https://github.com/delgard-founder/delgard.git
@@ -58,12 +76,22 @@ pnpm demo
 - une action hors-scope (`file_write`) est bloquée,
 - le journal d'audit est vérifié comme intact.
 
-### Utiliser le CLI
+## 📦 Structure du repo
 
-```bash
-node packages/cli/dist/index.js init      # crée agenttrust.yml + une paire de clés
-node packages/cli/dist/index.js verify audit-demo.jsonl
-node packages/cli/dist/index.js report agenttrust.yml
+```
+delgard/
+├── packages/
+│   ├── core/          # tokens, policy, audit — sans dépendance framework
+│   └── cli/            # delgard init | verify | report
+├── examples/
+│   └── two-agent-demo/ # démo runnable via `pnpm demo`
+└── agenttrust.yml       # exemple de policy déclarative
 ```
 
-## 📦 Structure du repo
+## 📄 Statut du projet
+
+C'est une **V0**. Le cœur (tokens, policy, audit) est testé et fonctionnel. Les intégrations avec des frameworks agents (Vercel AI SDK, Mastra, LangChain...) n'existent pas encore. Les retours, surtout de la part de personnes qui construisent des systèmes multi-agents, sont les bienvenus — via les issues GitHub.
+
+## Licence
+
+Voir le fichier [LICENSE](./LICENSE).
