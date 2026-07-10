@@ -1,3 +1,4 @@
+<img src="logo-wordmark.svg" alt="delgard" width="320"/>
 # delgard
 
 **La couche d'autorisation manquante entre agents IA.**
