@@ -1,0 +1,24 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="100%" stop-color="#111C33"/>
+    </linearGradient>
+  </defs>
+
+  <!-- fond -->
+  <rect width="200" height="200" rx="40" fill="url(#bg)"/>
+
+  <!-- bouclier (guard) -->
+  <path d="M100,26 L157,50 L157,108
+           C157,150 130,177 100,190
+           C70,177 43,150 43,108
+           L43,50 Z"
+        fill="none" stroke="#2DD4BF" stroke-width="7" stroke-linejoin="round"/>
+
+  <!-- deux agents reliés par une délégation scoped (guard) -->
+  <circle cx="76" cy="102" r="11" fill="#2DD4BF"/>
+  <circle cx="124" cy="102" r="11" fill="#2DD4BF" fill-opacity="0.55"/>
+  <line x1="87" y1="102" x2="108" y2="102" stroke="#2DD4BF" stroke-width="6" stroke-linecap="round"/>
+  <path d="M104,94 L114,102 L104,110" fill="none" stroke="#2DD4BF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
